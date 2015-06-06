@@ -126,7 +126,7 @@ public:
 };
 
 int main() {
-	POINT p1 = *(new POINT(5, 7));
+	POINT p1 = *(new POINT(5,t 7));
 	POINT p2 = POINT(5, 17);
 	LINE l = LINE(p1, p2);
 	cout << l.isParallel(l) << endl;
