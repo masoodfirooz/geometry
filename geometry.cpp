@@ -7,7 +7,7 @@ using namespace std;
 const double epsilon = 1e-9;
 
 bool isEqual(double x, double y) {
-	return ((x - y) <= epsilon) && ((x - y) >= epsilon * (-1));
+	return ((x - y) <= epsilon) && ((y - x) <= epsilon);
 }
 
 class POINT {
@@ -102,23 +102,35 @@ public:
 
 class LINE_SEGMENT {
 private:
-	POINT a, b;
+	POINT s, d;
 public:
-	LINE_SEGMENT(POINT a, POINT b) {
-		this->a = a;
-		this->b = b;
+	LINE_SEGMENT(POINT s, POINT d) {
+		this->s = s;
+		this->d = d;
 	}
 	double getLength() {
-		return sqrt(pow(a.getX() - b.getX(), 2) + pow(a.getY() - b.getY(), 2));
+		return sqrt(pow(s.getX() - d.getX(), 2) + pow(s.getY() - d.getY(), 2));
+	}
+	double getXAngle() {
+		if (isEqual(s.getY(), d.getY())) {
+			return acos((d.getX() - s.getX()) / getLength()) ;
+		}
+		return asin((d.getY() - s.getY()) / getLength());
+	}
+	double getYAngle() {
+		if (isEqual(s.getX(), d.getX())) {
+			return acos((d.getY() - s.getY()) / getLength());
+		}
+		return asin((d.getX() - s.getX()) / getLength()) ;
 	}
 };
 
 int main() {
-	POINT p1 = *(new POINT(2.5, 9));
-	POINT p2 = POINT(2.5, 5);
+	POINT p1 = *(new POINT(5, 7));
+	POINT p2 = POINT(5, 17);
 	LINE l = LINE(p1, p2);
 	cout << l.isParallel(l) << endl;
 	LINE_SEGMENT ls = LINE_SEGMENT(p1, p2);
-	cout << ls.getLength() << endl;
+	cout << ls.getYAngle() << endl;
 	return 0;
 }
