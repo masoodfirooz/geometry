@@ -14,9 +14,21 @@ class POINT {
 private:
 	double x, y;
 public:
+	POINT() {
+		x = y = 0;
+	}
 	POINT(double x, double y) {
 		this->x = x;
 		this->y = y;
+	}
+	POINT(const POINT &c) {
+		x = c.x;
+		y = c.y;
+	}
+	POINT& operator=(POINT &c) {
+		x = c.x;
+		y = c.y;
+		return *this;
 	}
 	void setX(double x) {
 		this->x = x;
@@ -53,6 +65,15 @@ public:
 			y_intercept = a.getY() - a.getX() * slope;
 		}
 	}
+	LINE(const LINE &c) {
+		slope = c.slope;
+		y_intercept = c.y_intercept;
+	}
+	LINE& operator=(const LINE& c) {
+		slope = c.slope;
+		y_intercept = c.y_intercept;
+		return *this;
+	}
 	void setY_intercept(double y_intercept) {
 		this->y_intercept = y_intercept;
 	}
@@ -79,10 +100,25 @@ public:
 	}
 };
 
+class LINE_SEGMENT {
+private:
+	POINT a, b;
+public:
+	LINE_SEGMENT(POINT a, POINT b) {
+		this->a = a;
+		this->b = b;
+	}
+	double getLength() {
+		return sqrt(pow(a.getX() - b.getX(), 2) + pow(a.getY() - b.getY(), 2));
+	}
+};
+
 int main() {
-	POINT p1 = *(new POINT(2.5, 5));
-	POINT p2 = *(new POINT(2.5, 5));
-	LINE l = *(new LINE(p1, p2));
+	POINT p1 = *(new POINT(2.5, 9));
+	POINT p2 = POINT(2.5, 5);
+	LINE l = LINE(p1, p2);
 	cout << l.isParallel(l) << endl;
+	LINE_SEGMENT ls = LINE_SEGMENT(p1, p2);
+	cout << ls.getLength() << endl;
 	return 0;
 }
